@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+
+  <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Insurance Services</h1>
+    <p class="lead">Choose your ideal insurance type.</p>
+  </div>
+
+  <div class="card-deck mb-3 text-center">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">Auto</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">$139.99 <small class="text-muted">/ mo</small></h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          <li>Liability</li>
+          <li>Collision & Comprehensive</li>
+          <li>Uninsured / Underinsured Motorist</li>
+          <li>Medical Payments</li>
+          <li>Personal Injury Protection (PIP)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">Home</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">$127.10 <small class="text-muted">/ mo</small></h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          <li>Home Property</li>
+          <li>Personal Possession</li>
+          <li>Medical Payments</li>
+          <li>Additional Living Expenses</li>
+          <li>Protection Away From Home</li>
+        </ul>
+      </div>
+    </div>
+    {% if current_user.is_authenticated %}
+      <a class="btn btn-lg btn-block btn-primary" href="{{ url_for('buy') }}">Buy Now</a>
+    {% else %}
+      <a class="btn btn-lg btn-block btn-primary" href="{{ url_for('register') }}">Buy Now</a>
+    {% endif %}
+  </div>
+{% endblock content %}

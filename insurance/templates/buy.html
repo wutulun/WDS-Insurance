@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form action="" method="POST">
+        <!-- for safety -->
+        {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-3">Choose one or two</legend>
+                <!-- insurance_type -->
+                <div>
+                    {{ form.insurance_type.label(class="form-control-label") }}
+                    <div class="card-deck text-center">
+
+                        <div class="card mb-2 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Auto</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">$139.99 <small class="text-muted">/ mo</small></h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                            <li>Liability</li>
+                            <li>Collision & Comprehensive</li>
+                            <li>Uninsured / Underinsured Motorist</li>
+                            <li>Medical Payments</li>
+                            <li>Personal Injury Protection (PIP)</li>
+                            </ul>
+                        </div>
+                        </div>
+
+                        <div class="card mb-2 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">Home</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">$127.10 <small class="text-muted">/ mo</small></h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                            <li>Home Property</li>
+                            <li>Personal Possession</li>
+                            <li>Medical Payments</li>
+                            <li>Additional Living Expenses</li>
+                            <li>Protection Away From Home</li>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+                    {{ form.insurance_type(class="form-control form-control-lg") }}
+                </div>
+            </fieldset>
+            <!-- sumbit button -->
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

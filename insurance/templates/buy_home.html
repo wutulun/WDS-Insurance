@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form action="" method="POST">
+        <!-- for safety -->
+        {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-3">
+                    {% if form.security.data %}
+                        Insurance
+                    {% else %}
+                        Insurance Details
+                    {% endif %}
+                </legend>
+                <!-- purchase_date -->
+                <div class="form-group">
+                    {{ form.purchase_date.label(class="form-control-label") }}
+                    {% if form.purchase_date.errors %}
+                        {{ form.purchase_date(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.purchase_date.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.purchase_date(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!-- purchase_value -->
+                <div class="form-group">
+                    {{ form.purchase_value.label(class="form-control-label") }}
+                    {% if form.purchase_value.errors %}
+                        {{ form.purchase_value(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.purchase_value.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="date">{{ form.purchase_value(class="form-control form-control-lg") }}</div>
+                    {% endif %}
+                </div>
+                <!-- home_area -->
+                <div class="form-group">
+                    {{ form.home_area.label(class="form-control-label") }}
+                    {% if form.home_area.errors %}
+                        {{ form.home_area(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.home_area.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="date">{{ form.home_area(class="form-control form-control-lg") }}</div>
+                    {% endif %}
+                </div>
+                <!-- type -->
+                <div class="form-group">
+                    {{ form.type.label(class="form-control-label") }}
+                    {{ form.type(class="form-control form-control-lg") }}
+                </div>
+
+                <div class="form-group mt-4">
+                    <div class="row">
+                        <!-- swimming_pool -->
+                        <div class="col-4">
+                            {{ form.swimming_pool.label }}
+                            {{ form.swimming_pool(class="ml-1") }}
+                        </div>
+                        <!-- fire -->
+                        <div class="col">
+                            {{ form.fire.label }}
+                            {{ form.fire(class="ml-1") }}
+                        </div>
+                        <!-- security -->
+                        <div class="col">
+                            {{ form.security.label }}
+                            {{ form.security(class="ml-1") }}
+                        </div>
+                        <!-- basement -->
+                        <div class="col-2">
+                            {{ form.basement.label }}
+                            {{ form.basement(class="ml-1") }}
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- sumbit button -->
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

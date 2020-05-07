@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <div>
+            <h2 class="mb-4">{{ current_user.full_name }}</h2>
+            <p>
+                Gender:
+                {% if current_user.gender == 'M' %}
+                    Male
+                {% else %}
+                    Female
+                {% endif %}
+            </p>
+            <p>
+                Marital status:
+                {% if current_user.marital_status == 'M' %}
+                    Married
+                {% elif current_user.marital_status == 'S' %}
+                    Single
+                {% else %}
+                    Widow/Widower
+                {% endif %}
+            </p>
+            <p>Address: {{ current_user.address }}</p>
+            <p>Email: {{ current_user.email }}</p>
+        </div>
+
+        <div class="form-group">
+            <h4 class="mb-3">Insurance:</h4>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Premium</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for insurance in current_user.insurances %}
+                    <tr>
+                        <td>{{ loop.index0 + 1 }}</td>
+                        <td>
+                            {% if insurance.type == 'A' %}
+                                Auto
+                            {% else %}
+                                Home
+                            {% endif %}
+                        </td>
+                        <td>{{ insurance.start_date }}</td>
+                        <td>{{ insurance.end_date }}</td>
+                        <td>${{ insurance.premium }}</td>
+                        <td>
+                            {% if insurance.status == 'C' %}
+                                Current
+                            {% else %}
+                                Expired
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ url_for('details', insurance_id=insurance.id) }}">More</a></td>
+                    </tr>
+                {% endfor %}  
+                </tbody>
+            </table>            
+        </div>
+
+        <!-- Update -->
+        <form action="" method="POST" enctype="multipart/form-data">
+            <!-- for safety -->
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Account Info</legend>
+                <!-- address -->
+                <div class="form-group">
+                    {{ form.address.label(class="form-control-label") }}
+                    {% if form.address.errors %}
+                        {{ form.address(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.address.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.address(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!-- marital_status -->
+                <div class="form-group">
+                    {{ form.marital_status.label(class="form-control-label") }}
+                    {% if form.marital_status.errors %}
+                        {{ form.marital_status(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.marital_status.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.marital_status(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <!-- email -->
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>    
+            </fieldset>
+            <!-- sumbit button -->
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

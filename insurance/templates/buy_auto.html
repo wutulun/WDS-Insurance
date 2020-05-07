@@ -1,0 +1,324 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form action="" method="POST">
+        <!-- for safety validation -->
+        <!-- generate a csrf_token for flaskform to pass validation -->
+        {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+            <legend class="border-bottom mb-3">Insurance Details</legend>
+
+                <!-- Vehicle -->
+                <div class="form-group mt-2 mb-4">  
+                    {% for vehicle in form.vehicles %} 
+                        <!-- Every Flask form need to have this to pass validation! -->
+                        {{ vehicle.hidden_tag() }} 
+
+                        <div id="vehicles-subforms-container">
+
+                            <div id="vehicles-0-form" class="vehicles-subform">
+                                <h4 class="mb-3">Vehicle Info<a id="remove-vehicle" class="btn-sm mb-3" href="#">Remove Vehicle</a></h4>
+                                <!-- vin -->
+                                <div class="form-group">
+                                    {{ vehicle.vin.label(class="form-control-label") }}
+                                    {% if vehicle.vin.errors %}
+                                        {{ vehicle.vin(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in vehicle.vin.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ vehicle.vin(class="form-control form-control-lg") }}
+                                    {% endif %}
+                                </div>
+                                <!-- make_model_year -->
+                                <div class="form-group">
+                                    {{ vehicle.make_model_year.label(class="form-control-label") }}
+                                    {% if vehicle.make_model_year.errors %}
+                                        {{ vehicle.make_model_year(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in vehicle.make_model_year.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ vehicle.make_model_year(class="form-control form-control-lg") }}
+                                    {% endif %}
+                                </div>
+                                <!-- status -->
+                                <div class="form-group">
+                                    {{ vehicle.status.label(class="form-control-label") }}
+                                    {% if vehicle.status.errors %}
+                                        {{ vehicle.status(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in vehicle.status.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ vehicle.status(class="form-control form-control-lg") }}
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Driver -->
+                                <div class="form-group mt-2 mb-4">
+                                    {% for driver in vehicle.drivers %}
+
+                                        <div id="drivers-subforms-container">
+
+                                            
+                                            <div id="vehicles-0-drivers-0-form" class="drivers-subform">
+                                                <h5 class="mt-4">Driver 1<a id="remove-driver" class="btn-sm" href="#">Remove Driver</a></h5>
+                                                <div class="row">
+                                                    <!-- license_number -->
+                                                    <div class="col-5">
+                                                        {{ driver.license_number.label }}
+                                                        {% if driver.license_number.errors %}
+                                                            {{ driver.license_number(class="small form-control is-invalid") }}
+                                                            <div class="invalid-feedback">
+                                                                {{ driver.license_number.errors[0] }}
+                                                            </div>
+                                                        {% else %}     
+                                                            {{ driver.license_number(class="small form-control") }}                                             
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col">
+                                                        <!-- driver_name -->
+                                                        {{ driver.driver_name.label }}
+                                                        {% if driver.driver_name.errors %}
+                                                            {{ driver.driver_name(class="small form-control is-invalid") }}
+                                                            <div class="invalid-feedback">
+                                                                {{ driver.driver_name.errors[0] }}
+                                                            </div>
+                                                        {% else %}
+                                                            {{ driver.driver_name(class="small form-control") }}
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col">
+                                                        <!-- birthdate -->
+                                                        {{ driver.birthdate.label }}
+                                                        {% if driver.birthdate.errors %}
+                                                            {{ driver.birthdate(class="form-control small is-invalid") }}
+                                                            <div class="invalid-feedback">
+                                                                {{ driver.birthdate.errors[0] }}
+                                                            </div>
+                                                        {% else %}
+                                                            {{ driver.birthdate(class="small form-control") }}
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    {% endfor %}
+                                    <a id="add-driver" href="#">Add Driver</a>           
+                                </div>
+
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                    <a id="add-vehicle" href="#">Add Vehicle</a>  
+                </div>
+
+            </fieldset>
+            <!-- sumbit button -->
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+
+{% block more %}
+    {# Form template for driver #}
+    <div id="vehicles-0-drivers-_-form" class="is-hidden">
+        <h5 class="mt-2"><a id="remove-driver" class="btn-sm" href="#">Remove Driver</a></h5>
+        <div class="row">
+            <!-- license_number -->
+            <div class="col-5">
+                <label>Driver’s license number</label>                    
+                <input class="small form-control" id="vehicles-0-drivers-_-license_number" name="vehicles-0-drivers-_-license_number" required type="text" value="">                                                 
+            </div>
+            <div class="col">
+                <!-- driver_name -->
+                <label>Driver’s Name</label>  
+                <input class="small form-control" id="vehicles-0-drivers-_-driver_name" name="vehicles-0-drivers-_-driver_name" required type="text" value="">   
+            </div>
+            <div class="col">
+                <!-- birthdate -->
+                <label>Birthdate</label>
+                <input class="small form-control" id="vehicles-0-drivers-_-birthdate" name="vehicles-0-drivers-_-birthdate" required type="date" value="">      
+            </div>
+        </div>
+    </div>
+
+    {# Form template for vehicle #}
+    <div id="vehicles-_-form" class="is-hidden">
+        <h4 class="mb-3">Vehicle Info<a id="remove-vehicle" class="btn-sm mb-3" href="#">Remove Vehicle</a></h4>
+        <!-- vin -->
+        <div class="form-group">
+            <label class="form-control-label">Vehicle VIN</label> 
+            <input class="form-control form-control-lg" id="vehicles-_-vin" name="vehicles-_-vin" required type="text" value="">     
+        </div>
+        <!-- make_model_year -->
+        <div class="form-group">
+            <label class="form-control-label">Vehicle make-model-year</label>
+            <input class="form-control form-control-lg" id="vehicles-_-make_model_year" name="vehicles-_-make_model_year" required type="text" value="">     
+        </div>
+        <!-- status -->
+        <div class="form-group">
+            <label class="form-control-label">Status</label>
+            <select class="form-control form-control-lg" id="vehicles-_-status" name="vehicles-_-status"><option value="L">Leased</option><option value="F">Financed</option><option value="O">Owned</option></select>   
+        </div>
+
+        <div class="form-group mt-2 mb-4">
+            <div id="drivers-subforms-container">
+                <!-- Driver's template here -->
+                <div id="vehicles-_-drivers-0-form" class="drivers-subform">
+                    <h5 class="mt-2">Driver 1<a id="remove-driver" class="btn-sm" href="#">Remove Driver</a></h5>
+                    <div class="row">
+                        <!-- license_number -->
+                        <div class="col-5">
+                            <label>Driver’s license number</label>                    
+                            <input class="small form-control" id="vehicles-_-drivers-0-license_number" name="vehicles-_-drivers-0-license_number" required type="text" value="">                                                 
+                        </div>
+                        <div class="col">
+                            <!-- driver_name -->
+                            <label>Driver’s Name</label>  
+                            <input class="small form-control" id="vehicles-_-drivers-0-driver_name" name="vehicles-_-drivers-0-driver_name" required type="text" value="">   
+                        </div>
+                        <div class="col">
+                            <!-- birthdate -->
+                            <label>Birthdate</label>
+                            <input class="small form-control" id="vehicles-_-drivers-0-birthdate" name="vehicles-_-drivers-0-birthdate" required type="date" value="">      
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a id="add-driver" href="#">Add Driver</a>
+        </div>
+    </div>
+
+    <!-- From JavaScript to jQuery! -->
+    <script>
+        /* Add a new driver form. */
+        function addDriverForm() {
+            var $vhcForm = $(this).closest(".vehicles-subform");
+            // Get index of parent form(vehicle)
+            var vhcIndex = $vhcForm.index();
+            // Get New index
+            var newIndex = $vhcForm.find(".drivers-subform:last").index() + 1;  // index of last subform + 1
+            // Get Template
+            var $templateForm = $("#vehicles-0-drivers-_-form");
+            /* Change Template */
+            var $newForm = $templateForm.clone();
+            // first change parent form infos (vehicles-0)
+            $newForm.attr('id', $newForm.attr('id').replace('0', vhcIndex));
+            $newForm.find('input').each(function() {
+                $(this).attr('id', $(this).attr('id').replace('0', vhcIndex));
+                $(this).attr('name', $(this).attr('name').replace('0', vhcIndex));
+            });
+            // then id and input(id+name)
+            $newForm.attr('id', $newForm.attr('id').replace('_', newIndex));
+            // console.log(newIndex);
+            $newForm.find('h5').prepend('Driver '+ (newIndex + 1))    // h5 is here!
+            $newForm.find('input').each(function() {
+                $(this).attr('id', $(this).attr('id').replace('_', newIndex));
+                $(this).attr('name', $(this).attr('name').replace('_', newIndex));
+            });
+            // Append and Display
+            $vhcForm.find('#drivers-subforms-container').append($newForm);
+            $newForm.addClass('drivers-subform');
+            $newForm.removeClass('is-hidden');
+            // Add Remove
+            $newForm.find('#remove-driver').click(removeDriverForm);
+            // To prevent the page from scrolling up!
+            return false;
+        }
+
+        /* Add a new vehicle form. */
+        function addVehicleForm() {
+            // Get New index
+            var newIndex = $(".vehicles-subform:last").index() + 1;
+            // Get Template
+            var $templateForm = $("#vehicles-_-form");
+            // Change Template
+            var $newForm = $templateForm.clone();
+            $newForm.attr('id', $newForm.attr('id').replace('_', newIndex));
+            $newForm.find('input').each(function() {
+                $(this).attr('id', $(this).attr('id').replace('_', newIndex));
+                $(this).attr('name', $(this).attr('name').replace('_', newIndex));
+            });
+            // $newForm.find('#vehicles-_-drivers-0-form') I didn't change the attributes of the first driver form, but it seems to work fine.
+            // Append and Display
+            $('#vehicles-subforms-container').append($newForm);
+            $newForm.addClass('vehicles-subform');
+            $newForm.removeClass('is-hidden');
+
+            // Add Driver forms
+            $newForm.find('#add-driver').click(addDriverForm);
+
+            // Add Remove
+            $newForm.find('#remove-vehicle').click(removeVehicleForm);
+
+            return false;
+        }
+
+        /* Remove a form. */
+        function removeDriverForm() {
+            var $removedForm = $(this).closest('.drivers-subform');     // return the first ansester with 'subform' class
+            var removedIndex = $removedForm.index();
+            // Remove the form
+            $removedForm.remove();
+            // Update indices
+            adjustIndices(removedIndex);
+            return false;
+        }
+
+        /* Remove a vehicle form. */
+        function removeVehicleForm() {
+            var $removedForm = $(this).closest('.vehicles-subform');     // return the first ansester with 'subform' class
+            var removedIndex = $removedForm.index();
+            // Remove the form
+            $removedForm.remove();
+            // Update indices
+            // adjustIndices(removedIndex);
+            return false;
+        }
+
+        /* Adjust the indices of the driver form. */
+        function adjustIndices(removedIndex) {
+            var $forms = $('.drivers-subform');
+
+            $forms.each(function() {
+                var index = $(this).index();
+
+                if (index >= removedIndex) {
+                    // change its h5 element
+                    $(this).find('h5').html('Driver ' + (index+1) + '<a id="remove-driver" class="btn-sm" href="#">Remove Driver</a>')
+                }
+                $(this).find('#remove-driver').click(removeDriverForm);
+            });
+
+            return false;
+        }
+
+        $(document).ready(function() {
+            $('#add-driver').click(addDriverForm);
+            $('#remove-driver').click(removeDriverForm);
+            $('#add-vehicle').click(addVehicleForm);
+            $('#remove-vehicle').click(removeVehicleForm);
+            return false;
+        });
+    </script>
+
+    <!-- Additional Style -->
+    <style>
+        .is-hidden {
+            display: none;
+        }
+    </style>
+{% endblock more %}
