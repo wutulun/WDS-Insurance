@@ -1,2 +1,4 @@
-# WDS-Insurance-
-NYU Tandon, CS-GY 6083 Principles of Database Systems, Final Project
+# WDS-Insurance
+Final Project
+CS-GY 6083 Principles of Database Systems
+NYU Tandon
