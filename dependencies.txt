@@ -1,0 +1,6 @@
+1. flask
+2. flask-wtf
+3. email-validator
+4. flask-sqlalchemy
+5. flask-bcrypt
+6. flask-login
