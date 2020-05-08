@@ -134,6 +134,7 @@
 
 {% block more %}
     {# Form template for driver #}
+    <!-- leave out the 'for' attribute of labels and seem to work just fine -->
     <div id="vehicles-0-drivers-_-form" class="is-hidden">
         <h5 class="mt-2"><a id="remove-driver" class="btn-sm" href="#">Remove Driver</a></h5>
         <div class="row">
@@ -239,6 +240,40 @@
             return false;
         }
 
+        /* Remove a driver form. */
+        function removeDriverForm() {
+            var $removedForm = $(this).closest('.drivers-subform');     // return the first ansester with 'subform' class
+            var removedIndex = $removedForm.index();
+            var containerIndex = $(this).closest('#drivers-subforms-container').index();
+            // Remove the form
+            $removedForm.remove();
+            // Update indices
+            adjustDriverIndices(removedIndex, containerIndex);
+            return false;
+        }
+
+        /* Adjust the indices of the driver form. */
+        function adjustDriverIndices(removedIndex, containerIndex) {
+            var $forms = $('#drivers-subforms-container').eq(containerIndex).find('.drivers-subform');
+            
+            $forms.each(function() {
+                var index = $(this).index();
+                if (index >= removedIndex) {
+                    // then id and input(id+name)
+                    $(this).attr('id', $(this).attr('id').replace(index+1, index));         
+                    $(this).find('input').each(function() {
+                        $(this).attr('id', $(this).attr('id').replace(index+1, index));
+                        $(this).attr('name', $(this).attr('name').replace(index+1, index));
+                    });
+                    // change its h5 element
+                    $(this).find('h5').html('Driver ' + (index+1) + '<a id="remove-driver" class="btn-sm" href="#">Remove Driver</a>')
+                }
+                $(this).find('#remove-driver').click(removeDriverForm);
+            });
+
+            return false;
+        }
+
         /* Add a new vehicle form. */
         function addVehicleForm() {
             // Get New index
@@ -252,7 +287,12 @@
                 $(this).attr('id', $(this).attr('id').replace('_', newIndex));
                 $(this).attr('name', $(this).attr('name').replace('_', newIndex));
             });
-            // $newForm.find('#vehicles-_-drivers-0-form') I didn't change the attributes of the first driver form, but it seems to work fine.
+            $newForm.find('select').attr('id', $newForm.find('select').attr('id').replace('_', newIndex))
+            $newForm.find('select').attr('name', $newForm.find('select').attr('name').replace('_', newIndex))
+            
+            // Change Sub-template (vehicles-_-drivers-0-form)
+            $newForm.find('#vehicles-_-drivers-0-form').attr('id', $newForm.find('#vehicles-_-drivers-0-form').attr('id').replace('_', newIndex));
+
             // Append and Display
             $('#vehicles-subforms-container').append($newForm);
             $newForm.addClass('vehicles-subform');
@@ -266,18 +306,7 @@
 
             return false;
         }
-
-        /* Remove a form. */
-        function removeDriverForm() {
-            var $removedForm = $(this).closest('.drivers-subform');     // return the first ansester with 'subform' class
-            var removedIndex = $removedForm.index();
-            // Remove the form
-            $removedForm.remove();
-            // Update indices
-            adjustIndices(removedIndex);
-            return false;
-        }
-
+        
         /* Remove a vehicle form. */
         function removeVehicleForm() {
             var $removedForm = $(this).closest('.vehicles-subform');     // return the first ansester with 'subform' class
@@ -285,22 +314,28 @@
             // Remove the form
             $removedForm.remove();
             // Update indices
-            // adjustIndices(removedIndex);
+            adjustVehicleIndices(removedIndex);
             return false;
         }
 
-        /* Adjust the indices of the driver form. */
-        function adjustIndices(removedIndex) {
-            var $forms = $('.drivers-subform');
-
+        /* Adjust the indices of the vehicle form. */
+        function adjustVehicleIndices(removedIndex) {
+            var $forms = $('.vehicles-subform');
+            
             $forms.each(function() {
                 var index = $(this).index();
-
                 if (index >= removedIndex) {
-                    // change its h5 element
-                    $(this).find('h5').html('Driver ' + (index+1) + '<a id="remove-driver" class="btn-sm" href="#">Remove Driver</a>')
+                    // then id and input(id+name)
+                    $(this).attr('id', $(this).attr('id').replace(index+1, index));         
+                    $(this).find('input').each(function() {
+                        $(this).attr('id', $(this).attr('id').replace(index+1, index));
+                        $(this).attr('name', $(this).attr('name').replace(index+1, index));
+                    });
+                    // Remember the select element!
+                    $(this).find('select').attr('id', $(this).find('select').attr('id').replace(index+1, index))
+                    $(this).find('select').attr('name', $(this).find('select').attr('name').replace(index+1, index))
                 }
-                $(this).find('#remove-driver').click(removeDriverForm);
+                $(this).find('#remove-vehicle').click(removeVehicleForm);
             });
 
             return false;

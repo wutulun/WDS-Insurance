@@ -90,22 +90,28 @@ def buy_auto():
     form = AutoForm()
     form1 = VehicleForm()
     if form.validate_on_submit():
+        
         insurance = Insurance(start_date=datetime.date.today(), 
-                              end_date=datetime.date.today()+datetime.timedelta(days=90), 
-                              premium=139.99*3, status='C', type='A', 
-                              customer_id=current_user.id)
+                              end_date=datetime.date.today()+datetime.timedelta(days=30*3), 
+                              status='C', type='A', 
+                              customer_id=current_user.id)  # Lack of premium
         
         db.session.add(insurance)
         
+        num_of_vhc = len(form.vehicles)
+        num_of_dvr = 0     
         # A Small Trick! Use relationship to write FK and add to session in one line!
         for vhc in form.vehicles:   # form object!
             vehicle = Vehicle(vin=vhc.vin.data, make_model_year=vhc.make_model_year.data, status=vhc.status.data)    # No FK yet.
             insurance.vehicles.append(vehicle)  # Now have FK! And add to session as well!
-        
+            
+            num_of_dvr += len(vhc.drivers)
             for dvr in vhc.drivers:
                 driver = Driver(license_number=dvr.license_number.data, driver_name=dvr.driver_name.data, birthdate=dvr.birthdate.data)      # No FK yet
                 vehicle.drivers.append(driver)  # Now have FK! And add to session as well!
-            
+        
+        # Set premium
+        insurance.premium = (139.99 + 20*num_of_vhc + 30*num_of_dvr) * 3   
         db.session.commit()
         
         return redirect(url_for('account'))
@@ -136,7 +142,3 @@ def details(insurance_id):
     print(insurance_id)
     insurance = Insurance.query.get(insurance_id)
     return render_template('details.html', title='details', insurance=insurance)
-
-@app.route('/hhh/<name>')
-def hhh(name):
-    return 'name'

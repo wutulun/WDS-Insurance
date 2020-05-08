@@ -1,19 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
+        <!-- Vehicle -->
         <div>
             {% for vehicle in insurance.vehicles %}
-                <h2 class="mb-4">Vehicle</h2>
-                <p>Vehicle VIN: {{ vehicle.vin }}</p>
-                <p>Make model year: {{ vehicle.make_model_year }}</p>
-                <p>Status: {{ vehicle.status }}</p>
-                <div>
-                    {% for driver in vehicle.drivers %}
-                        <h3>Driver</h3>
-                        <p>License number: {{ driver.license_number }}</p>
-                        <p>Name: {{ driver.driver_name }}</p>
-                        <p>Birthdate: {{ driver.birthdate }}</p>
-                    {% endfor %}
+                <div class="form-group mb-4">
+                    <h4 class="mb-3">Vehicle {{ loop.index0 + 1 }}</h4>
+                    <p>Vehicle VIN: {{ vehicle.vin }}</p>
+                    <p>Make model year: {{ vehicle.make_model_year }}</p>
+                    <p>Status: 
+                        {% if vehicle.status == 'O' %}
+                            Owened
+                        {% elif vehicle.status == 'F' %}
+                            Financed
+                        {% else %}
+                            Leased
+                        {% endif %}
+                    </p>
+                    <!-- Driver -->
+                    <table class="table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">License number</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Birthdate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for driver in vehicle.drivers %}
+                                <tr>
+                                    <th scope="row">Driver {{ loop.index0 + 1 }}</th>
+                                    <td>{{ driver.license_number }}</td>
+                                    <td>{{ driver.driver_name }}</td> 
+                                    <td>{{ driver.birthdate }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             {% endfor %}
         </div>  
