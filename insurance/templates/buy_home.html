@@ -6,78 +6,86 @@
         {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-3">Insurance Details</legend>
-                <!-- purchase_date -->
-                <div class="form-group">
-                    {{ form.purchase_date.label(class="form-control-label") }}
-                    {% if form.purchase_date.errors %}
-                        {{ form.purchase_date(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.purchase_date.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.purchase_date(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <!-- purchase_value -->
-                <div class="form-group">
-                    {{ form.purchase_value.label(class="form-control-label") }}
-                    {% if form.purchase_value.errors %}
-                        {{ form.purchase_value(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.purchase_value.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="date">{{ form.purchase_value(class="form-control form-control-lg") }}</div>
-                    {% endif %}
-                </div>
-                <!-- home_area -->
-                <div class="form-group">
-                    {{ form.home_area.label(class="form-control-label") }}
-                    {% if form.home_area.errors %}
-                        {{ form.home_area(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.home_area.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="date">{{ form.home_area(class="form-control form-control-lg") }}</div>
-                    {% endif %}
-                </div>
-                <!-- type -->
-                <div class="form-group">
-                    {{ form.type.label(class="form-control-label") }}
-                    {{ form.type(class="form-control form-control-lg") }}
-                </div>
-
-                <div class="form-group mt-4">
-                    <div class="row">
-                        <!-- swimming_pool -->
-                        <div class="col-4">
-                            {{ form.swimming_pool.label }}
-                            {{ form.swimming_pool(class="ml-1") }}
-                        </div>
-                        <!-- fire -->
-                        <div class="col">
-                            {{ form.fire.label }}
-                            {{ form.fire(class="ml-1") }}
-                        </div>
-                        <!-- security -->
-                        <div class="col">
-                            {{ form.security.label }}
-                            {{ form.security(class="ml-1") }}
-                        </div>
-                        <!-- basement -->
-                        <div class="col-2">
-                            {{ form.basement.label }}
-                            {{ form.basement(class="ml-1") }}
+                {% for house in form.houses %}
+                    <div class="subforms-container">
+                        <div id="houses-0-form" class="subform">
+                            <h4 class="mb-3">House Info<a id="remove" class="btn-sm mb-3" href="#">Remove House</a></h4>
+                            <!-- purchase_date -->
+                            <div class="form-group">
+                                {{ house.purchase_date.label(class="form-control-label") }}
+                                {% if house.purchase_date.errors %}
+                                    {{ house.purchase_date(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in house.purchase_date.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ house.purchase_date(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <!-- purchase_value -->
+                            <div class="form-group">
+                                {{ house.purchase_value.label(class="form-control-label") }}
+                                {% if house.purchase_value.errors %}
+                                    {{ house.purchase_value(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in house.purchase_value.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ house.purchase_value(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <!-- home_area -->
+                            <div class="form-group">
+                                {{ house.home_area.label(class="form-control-label") }}
+                                {% if house.home_area.errors %}
+                                    {{ house.home_area(class="form-control form-control-lg is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in house.home_area.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ house.home_area(class="form-control form-control-lg") }}
+                                {% endif %}
+                            </div>
+                            <!-- home_type -->
+                            <div class="form-group">
+                                {{ house.home_type.label(class="form-control-label") }}
+                                {{ house.home_type(class="form-control form-control-lg") }}
+                            </div>
+                            <!-- Four Parameters -->
+                            <div class="form-group mt-4">
+                                <div class="row">
+                                    <!-- swimming_pool -->
+                                    <div class="col-4">
+                                        {{ house.swimming_pool.label }}
+                                        {{ house.swimming_pool(class="ml-1") }}
+                                    </div>
+                                    <!-- fire -->
+                                    <div class="col">
+                                        {{ house.fire.label }}
+                                        {{ house.fire(class="ml-1") }}
+                                    </div>
+                                    <!-- security -->
+                                    <div class="col">
+                                        {{ house.security.label }}
+                                        {{ house.security(class="ml-1") }}
+                                    </div>
+                                    <!-- basement -->
+                                    <div class="col-2">
+                                        {{ house.basement.label }}
+                                        {{ house.basement(class="ml-1") }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <a id="add" href="#">Add House</a>              
+                {% endfor %}
             </fieldset>
             <!-- sumbit button -->
             <div class="form-group">
@@ -86,3 +94,114 @@
         </form>
     </div>
 {% endblock content %}
+
+{% block more %}
+    <!-- Form Template -->
+    <div id="houses-_-form" class="is-hidden">
+        <h4 class="mb-3">House Info<a id="remove" class="btn-sm mb-3" href="#">Remove House</a></h4>
+        <!-- purchase_date -->
+        <div class="form-group">
+            <label class="form-control-label" for="houses-X-purchase_date">Purchase date</label>
+            <input class="form-control form-control-lg" id="houses-X-purchase_date" name="houses-X-purchase_date" required type="date" value="">   
+        </div>
+        <!-- purchase_value -->
+        <div class="form-group">
+            <label class="form-control-label" for="houses-X-purchase_value">Purchase value</label>
+            <input class="form-control form-control-lg" id="houses-X-purchase_value" name="houses-X-purchase_value" required type="text" value="">
+        </div>
+        <!-- home_area -->
+        <div class="form-group">
+            <label class="form-control-label" for="houses-X-home_area">Home area in Sq. Ft</label>
+            <input class="form-control form-control-lg" id="houses-X-home_area" name="houses-X-home_area" required type="text" value="">
+        </div>
+        <!-- home_type -->
+        <div class="form-group">
+            <label class="form-control-label" for="houses-X-home_type">Type</label>
+            <select class="form-control form-control-lg" id="houses-X-home_type" name="houses-X-home_type"><option value="S">Single family</option><option value="M">Multi Family</option><option value="C">Condominium</option><option value="T">Town house</option></select>
+        </div>
+        <!-- Four Parameters -->
+        <div class="form-group mt-4">
+            <div class="row">
+                <!-- swimming_pool -->
+                <div class="col-4">
+                    <label for="houses-X-swimming_pool">Swimming Pool</label>
+                    <select class="ml-1" id="houses-X-swimming_pool" name="houses-X-swimming_pool"><option value="U">Underground</option><option value="O">Overground</option><option value="I">Indoor</option><option value="M">Multiple</option><option value="N">None</option></select>
+                </div>
+                <!-- fire -->
+                <div class="col">
+                    <label for="houses-X-fire">Auto Fire Notification</label>
+                    <input class="ml-1" id="houses-X-fire" name="houses-X-fire" type="checkbox" value="y">
+                </div>
+                <!-- security -->
+                <div class="col">
+                    <label for="houses-X-security">Home Security System</label>
+                    <input class="ml-1" id="houses-X-security" name="houses-X-security" type="checkbox" value="y">
+                </div>
+                <!-- basement -->
+                <div class="col-2">
+                    <label for="houses-X-basement">Basement</label>
+                    <input class="ml-1" id="houses-X-basement" name="houses-X-basement" type="checkbox" value="y">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script>
+        function addForm() {
+            var $templateForm = $('#houses-_-form');
+            var newIndex = $('.subform:last').index() + 1;
+            var $newForm = $templateForm.clone();
+            $newForm.attr('id', $newForm.attr('id').replace('_', newIndex));
+            $newForm.find('label').each(function() {
+                $(this).attr('for', $(this).attr('for').replace('X', newIndex));
+            });
+            $newForm.find('input').each(function() {
+                $(this).attr('id', $(this).attr('id').replace('X', newIndex));
+                $(this).attr('name', $(this).attr('name').replace('X', newIndex));
+            });
+            $newForm.find('select').each(function() {
+                $(this).attr('id', $(this).attr('id').replace('X', newIndex));
+                $(this).attr('name', $(this).attr('name').replace('X', newIndex));
+            });
+            $newForm.removeClass('is-hidden');
+            $newForm.addClass('subform');
+            $newForm.find('#remove').click(removeForm);
+            $('.subforms-container').append($newForm);
+        }
+
+        function removeForm() {
+            var $removedForm = $(this).closest('.subform');
+            var removedIndex = $removedForm.index();
+            $removedForm.remove();
+            adjustIndices(removedIndex);
+        }
+
+        function adjustIndices(removedIndex) {
+            $forms = $('.subform');
+            $forms.each(function() {
+                var index = $(this).index();
+                if (index >= removedIndex) {
+                    $(this).attr('id', $(this).attr('id').replace(index+1, index));
+                    $(this).find('label').each(function() {
+                        $(this).attr('for', $(this).attr('for').replace(index+1, index));
+                    });
+                    $(this).find('input').each(function() {
+                        $(this).attr('id', $(this).attr('id').replace(index+1, index));
+                        $(this).attr('name', $(this).attr('name').replace(index+1, index));
+                    });
+                    $(this).find('select').each(function() {
+                        $(this).attr('id', $(this).attr('id').replace(index+1, index));
+                        $(this).attr('name', $(this).attr('name').replace(index+1, index));
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $('#add').click(addForm);
+            $('#remove').click(removeForm);
+            return false;
+        });
+    </script>
+{% endblock more %}

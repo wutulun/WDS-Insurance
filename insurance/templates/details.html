@@ -1,44 +1,115 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <!-- Vehicle -->
-        <div>
-            {% for vehicle in insurance.vehicles %}
+        {% if insurance.type == 'A' %}
+            <!-- Vehicle -->
+            <div>
+                {% for vehicle in insurance.vehicles %}
+                    <div class="form-group mb-4">
+                        <h2 class="mb-3">Vehicle {{ loop.index0 + 1 }}</h2>
+                        <p class="lead"><b>Vehicle VIN: </b>{{ vehicle.vin }}</p>
+                        <p class="lead"><b>Make model year: </b>{{ vehicle.make_model_year }}</p>
+                        <p class="lead"><b>Status: </b>
+                            {% if vehicle.status == 'O' %}
+                                Owened
+                            {% elif vehicle.status == 'F' %}
+                                Financed
+                            {% else %}
+                                Leased
+                            {% endif %}
+                        </p>
+                        <!-- Driver -->
+                        <table class="table-sm table-bordered text-center mt-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">License Number</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Birthdate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for driver in vehicle.drivers %}
+                                    <tr>
+                                        <th scope="row">Driver {{ loop.index0 + 1 }}</th>
+                                        <td>{{ driver.license_number }}</td>
+                                        <td>{{ driver.driver_name }}</td> 
+                                        <td>{{ driver.birthdate }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Home -->
+            {% for home in insurance.homes %}
                 <div class="form-group mb-4">
-                    <h4 class="mb-3">Vehicle {{ loop.index0 + 1 }}</h4>
-                    <p>Vehicle VIN: {{ vehicle.vin }}</p>
-                    <p>Make model year: {{ vehicle.make_model_year }}</p>
-                    <p>Status: 
-                        {% if vehicle.status == 'O' %}
-                            Owened
-                        {% elif vehicle.status == 'F' %}
-                            Financed
-                        {% else %}
-                            Leased
+                    <h2 class="mb-3">Home {{ loop.index0 + 1 }}</h2>
+                    <p class="lead"><b>Purchase Date: </b>{{ home.purchase_date }}</p>
+                    <p class="lead"><b>Purchase Value: </b>{{ home.purchase_value }}</p> 
+                    <p class="lead"><b>Home Area: </b>{{ home.home_area }}</p>
+                    <p class="lead"><b>Home Type: </b>
+                        {% if home.home_type == 'S' %}
+                            Single Family
+                        {% elif home.home_type == 'M' %}
+                            Multi Family
+                        {% elif home.home_type == 'C' %}
+                            Condominium
+                        {% elif home.home_type == 'T' %}
+                            Town House
                         {% endif %}
                     </p>
-                    <!-- Driver -->
-                    <table class="table-sm table-bordered text-center">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">License Number</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Birthdate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for driver in vehicle.drivers %}
-                                <tr>
-                                    <th scope="row">Driver {{ loop.index0 + 1 }}</th>
-                                    <td>{{ driver.license_number }}</td>
-                                    <td>{{ driver.driver_name }}</td> 
-                                    <td>{{ driver.birthdate }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <table class="table-sm table-bordered table-hover text-center mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">Auto Fire Notification</th>
+                            <th scope="col">Home Security System</th>
+                            <th scope="col">Swimming Pool</th>
+                            <th scope="col">Basement</th>
+                        </tr>
+                    </thead>
+                    <tbody>       
+                        <tr>
+                            <td>
+                                {% if home.fire == 1 %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if home.security == 1 %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if home.swimming_pool == 'U' %}
+                                    Underground
+                                {% elif home.swimming_pool == 'O' %}
+                                    Overground
+                                {% elif home.swimming_pool == 'I' %}
+                                    Indoor
+                                {% elif home.swimming_pool == 'M' %}
+                                    Multiple
+                                {% elif home.swimming_pool == None %}
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if home.basement == 1 %}
+                                    Yes
+                                {% else %}
+                                    No
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 </div>
             {% endfor %}
-        </div>  
+        {% endif %}
 {% endblock content %}

@@ -7,7 +7,6 @@
         {{ form.hidden_tag() }}
             <fieldset class="form-group">
             <legend class="border-bottom mb-3">Insurance Details</legend>
-
                 <!-- Vehicle -->
                 <div class="form-group mt-2 mb-4">  
                     {% for vehicle in form.vehicles %} 
@@ -83,8 +82,8 @@
                                                             {{ driver.license_number(class="small form-control") }}                                             
                                                         {% endif %}
                                                     </div>
-                                                    <div class="col">
-                                                        <!-- driver_name -->
+                                                    <!-- driver_name -->
+                                                    <div class="col">  
                                                         {{ driver.driver_name.label }}
                                                         {% if driver.driver_name.errors %}
                                                             {{ driver.driver_name(class="small form-control is-invalid") }}
@@ -95,8 +94,8 @@
                                                             {{ driver.driver_name(class="small form-control") }}
                                                         {% endif %}
                                                     </div>
+                                                    <!-- birthdate -->
                                                     <div class="col">
-                                                        <!-- birthdate -->
                                                         {{ driver.birthdate.label }}
                                                         {% if driver.birthdate.errors %}
                                                             {{ driver.birthdate(class="form-control small is-invalid") }}
@@ -122,7 +121,6 @@
                     {% endfor %}
                     <a id="add-vehicle" href="#">Add Vehicle</a>  
                 </div>
-
             </fieldset>
             <!-- sumbit button -->
             <div class="form-group">
@@ -349,11 +347,4 @@
             return false;
         });
     </script>
-
-    <!-- Additional Style -->
-    <style>
-        .is-hidden {
-            display: none;
-        }
-    </style>
 {% endblock more %}

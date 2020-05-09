@@ -3,16 +3,16 @@
     <div class="content-section">
         <div>
             <h2 class="mb-4">{{ current_user.full_name }}</h2>
-            <p>
-                Gender:
+            <p class="lead">
+                <b>Gender: </b>
                 {% if current_user.gender == 'M' %}
                     Male
                 {% else %}
                     Female
                 {% endif %}
             </p>
-            <p>
-                Marital status:
+            <p class="lead">
+                <b>Marital status:</b>
                 {% if current_user.marital_status == 'M' %}
                     Married
                 {% elif current_user.marital_status == 'S' %}
@@ -21,8 +21,8 @@
                     Widow/Widower
                 {% endif %}
             </p>
-            <p>Address: {{ current_user.address }}</p>
-            <p>Email: {{ current_user.email }}</p>
+            <p class="lead"><b>Address: </b>{{ current_user.address }}</p>
+            <p class="lead"><b>Email: </b>{{ current_user.email }}</p>
         </div>
 
         <div class="form-group mt-4 mb-4">

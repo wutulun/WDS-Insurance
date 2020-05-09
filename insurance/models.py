@@ -70,7 +70,7 @@ class Home(db.Model):
     purchase_date = db.Column(db.Date, nullable=False)
     purchase_value = db.Column(db.Numeric(scale=2), nullable=False)
     home_area = db.Column(db.Numeric(scale=2), nullable=False)
-    type = db.Column(db.String(1), nullable=False)
+    home_type = db.Column(db.String(1), nullable=False)
     
     fire = db.Column(db.Integer, nullable=False)
     security = db.Column(db.Integer, nullable=False)
@@ -80,7 +80,7 @@ class Home(db.Model):
     insurance_id = db.Column(db.Integer, db.ForeignKey('insurance.id'), nullable=False)
 
     def __repr__(self):
-        return f"Home('{self.purchase_date}', '{self.purchase_value}'')"
+        return f"Home('{self.purchase_date}', '${self.purchase_value}', '{self.home_area}Sq.ft')"
         
 class Invoice(db.Model):
     

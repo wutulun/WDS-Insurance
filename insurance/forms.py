@@ -87,21 +87,27 @@ class AutoForm(FlaskForm):
     # TODO: add an installation check
     #1 TODO: add a duration choice(90 days, half year, one year...)
     submit = SubmitField('Start 90-day Auto Insurance!')  
- 
-   
-class HomeForm(FlaskForm):
-    # House
+
+class HouseForm(Form):
+    # Subform
     purchase_date = DateField('Purchase date', format='%Y-%m-%d', validators=[DataRequired()])
     purchase_value = DecimalField('Purchase value', validators=[DataRequired()])
     home_area = DecimalField('Home area in Sq. Ft', validators=[DataRequired()])
-    type = SelectField('Type', choices=[('S', 'Single family'), ('M', 'Multi Family'), ('C', 'Condominium'), ('T', 'Town house')])   
+    home_type = SelectField('Type', choices=[('S', 'Single family'), ('M', 'Multi Family'), ('C', 'Condominium'), ('T', 'Town house')])   
     # Four Parameters
     fire = BooleanField('Auto Fire Notification')
     security = BooleanField('Home Security System')
-    swimming_pool = SelectField('Swimming Pool', choices=[('U', 'Underground'), ('O', 'Overground'), ('I', 'Indoor'), ('M', 'Multiple'), (None, None)])
+    swimming_pool = SelectField('Swimming Pool', choices=[('U', 'Underground'), ('O', 'Overground'), ('I', 'Indoor'), ('M', 'Multiple'), ('N', 'None')])
     basement = BooleanField('Basement')
     
-    submit = SubmitField('Sign up')
+class HomeForm(FlaskForm):
+    # Parent Form
+    houses = FieldList(
+        FormField(HouseForm),
+        min_entries=1
+    )
+    
+    submit = SubmitField('Start 90-day Home Insurance!')
     
 class PaymentForm(FlaskForm):
     
