@@ -5,13 +5,7 @@
         <!-- for safety -->
         {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-3">
-                    {% if form.security.data %}
-                        Insurance
-                    {% else %}
-                        Insurance Details
-                    {% endif %}
-                </legend>
+                <legend class="border-bottom mb-3">Insurance Details</legend>
                 <!-- purchase_date -->
                 <div class="form-group">
                     {{ form.purchase_date.label(class="form-control-label") }}

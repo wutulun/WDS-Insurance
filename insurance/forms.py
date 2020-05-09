@@ -102,3 +102,8 @@ class HomeForm(FlaskForm):
     basement = BooleanField('Basement')
     
     submit = SubmitField('Sign up')
+    
+class PaymentForm(FlaskForm):
+    
+    method = SelectField('Payment method', choices=[('P', 'PayPal'), ('C', 'Credit'), ('D', 'Debit'), ('K', 'Check')])   
+    submit = SubmitField('Pay now!')

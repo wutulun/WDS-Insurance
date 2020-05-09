@@ -1,8 +1,8 @@
 from insurance import app, db, bcrypt
 from flask import render_template, url_for, flash, redirect, request
 from insurance.forms import RegistrationForm, LoginForm, UpdateAccountForm, SelectInsuranceForm, HomeForm, \
-                            AutoForm, VehicleForm
-from insurance.models import Customer, Insurance, Vehicle, Driver, Home
+                            AutoForm, VehicleForm, PaymentForm
+from insurance.models import Customer, Insurance, Vehicle, Driver, Home, Invoice, Payment
 from flask_login import login_user, current_user, logout_user, login_required
 from decimal import Decimal, ROUND_UP # data processing
 import datetime
@@ -35,7 +35,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('account'))
     form = LoginForm()
     if form.validate_on_submit():
         customer = Customer.query.filter_by(email=form.email.data).first()
@@ -43,7 +43,7 @@ def login():
             login_user(customer)
             flash('You have been logged in!', 'success')
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            return redirect(next_page) if next_page else redirect(url_for('account'))
         else:
             flash('Login unsuccessful. Please check your email and password.', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -89,13 +89,12 @@ def buy():
 def buy_auto():
     form = AutoForm()
     form1 = VehicleForm()
-    if form.validate_on_submit():
-        
+    if form.validate_on_submit():   
+        month = 3 
         insurance = Insurance(start_date=datetime.date.today(), 
-                              end_date=datetime.date.today()+datetime.timedelta(days=30*3), 
+                              end_date=datetime.date.today()+datetime.timedelta(days=30*month), 
                               status='C', type='A', 
-                              customer_id=current_user.id)  # Lack of premium
-        
+                              customer_id=current_user.id)  # Lack of premium 
         db.session.add(insurance)
         
         num_of_vhc = len(form.vehicles)
@@ -111,7 +110,17 @@ def buy_auto():
                 vehicle.drivers.append(driver)  # Now have FK! And add to session as well!
         
         # Set premium
-        insurance.premium = (139.99 + 20*num_of_vhc + 30*num_of_dvr) * 3   
+        insurance.premium = (139.99 + 20*num_of_vhc + 30*num_of_dvr) * month
+        
+        # Set monthly invoice
+        for i in range(month):
+            invoice_date = datetime.date.today() + datetime.timedelta(days=i*30)
+            invoice = Invoice(invoice_date=invoice_date,
+                              payment_due_date=invoice_date+datetime.timedelta(days=10),
+                              invoice_amount=insurance.premium/month,
+                              status='U')
+            insurance.invoices.append(invoice)
+            
         db.session.commit()
         
         return redirect(url_for('account'))
@@ -138,7 +147,26 @@ def buy_home():
     return render_template('buy_home.html', title='Buy-home', form=form)
 
 @app.route('/details/<insurance_id>')
+@login_required
 def details(insurance_id):
-    print(insurance_id)
     insurance = Insurance.query.get(insurance_id)
     return render_template('details.html', title='details', insurance=insurance)
+
+@app.route('/invoices/<insurance_id>')
+@login_required
+def invoices(insurance_id):
+    insurance = Insurance.query.get(insurance_id)
+    return render_template('invoices.html', title='invoices', insurance=insurance)
+
+@app.route('/payment/<invoice_id>', methods=['GET', 'POST'])
+@login_required
+def payment(invoice_id):
+    invoice = Invoice.query.get(invoice_id)
+    form = PaymentForm()
+    if form.validate_on_submit():
+        payment = Payment(payment_date=datetime.date.today(), method=form.method.data, invoice_id=invoice.id)
+        db.session.add(payment)
+        invoice.status = 'P'
+        db.session.commit()
+        return redirect(url_for('invoices', insurance_id=invoice.insurance_id))
+    return render_template('payment.html', title='payment', invoice=invoice, form=form)

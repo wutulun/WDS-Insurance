@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h4 class="mb-3">Invoice</h4>
+    <table class="table-sm table-bordered text-center">
+        <thead>
+            <tr>
+                <th scope="col">Invoice ID</th>
+                <th scope="col">Invoice Date</th>
+                <th scope="col">Payment Due Date</th>
+                <th scope="col">Invoice Amount</th>
+                <th scope="col">Status</th>
+                <th scope="col">Payment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in insurance.invoices %}
+                {% if invoice.status == 'U' %}
+                    <tr>
+                        <td>{{ invoice.id }}</td>
+                        <td>{{ invoice.invoice_date }}</td> 
+                        <td>{{ invoice.payment_due_date }}</td>
+                        <td>{{ invoice.invoice_amount }}</td>
+                        <td>Unpaid</td>
+                        <td><a href="{{ url_for('payment', invoice_id=invoice.id) }}">Pay</a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-muted">
+        <h5 class="mt-4">Paid Invoice</h5>
+        <table class="table-sm table-bordered text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Invoice ID</th>
+                    <th scope="col">Invoice Date</th>
+                    <th scope="col">Payment Date</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Invoice Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in insurance.invoices %}
+                    {% if invoice.status == 'P' %}
+                        <tr>
+                            <td>{{ invoice.id }}</td>
+                            <td>{{ invoice.invoice_date }}</td> 
+                            <td>{{ invoice.payment[0].payment_date }}</td>
+                            <td>
+                                {% if invoice.payment[0].method == 'P' %}
+                                    PayPal
+                                {% elif invoice.payment[0].method == 'C' %}
+                                    Credit
+                                {% elif invoice.payment[0].method == 'D' %}
+                                    Debit
+                                {% else %}
+                                    Check
+                                {% endif %}
+                            </td>
+                            <td>{{ invoice.invoice_amount }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+{% endblock content %}
